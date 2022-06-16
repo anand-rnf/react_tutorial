@@ -5,6 +5,8 @@ import axios from "axios";
 const Home = ({ title }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [users, setUsers] = useState([]);
+  const [limit, setLimit] = useState("10");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -15,9 +17,23 @@ const Home = ({ title }) => {
     console.log(formData);
   };
 
-  // useEffect(() => {
-
-  // })
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios({
+          url: "https://dummyjson.com/users",
+          method: "GET",
+          params: {
+            limit: limit,
+          },
+        });
+        setUsers(res.data.users);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [limit]);
 
   return (
     <div>
@@ -41,6 +57,17 @@ const Home = ({ title }) => {
       </form>
 
       <h1>Welcome {name}!</h1>
+      <select value={limit} onChange={(e) => setLimit(e.target.value)}>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+      </select>
+      <h3>Users</h3>
+      <ul>
+        {users.map((user) => {
+          return <li key={user.id}>{`${user.firstName} ${user.lastName}`}</li>;
+        })}
+      </ul>
     </div>
   );
 };
