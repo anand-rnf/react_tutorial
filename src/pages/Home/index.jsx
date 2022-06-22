@@ -1,12 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import Categories from "../../components/Home/Categories";
+import Featured from "../../components/Home/Featured";
 import Layout from "../../components/Layout";
 
-const Home = ({ title }) => {
+const Home = () => {
   return (
     <Layout>
-      <h1>Home</h1>
+      <Featured />
+      <Categories />
     </Layout>
   );
 };

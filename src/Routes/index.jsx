@@ -7,7 +7,7 @@ import Shop from "../pages/Shop";
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path={"/"} element={<Home title="Home Page" />} />
+      <Route path={"/"} element={<Home />} />
       <Route path={"/about"} element={<About />} />
       <Route path={"/shop"} element={<Shop />} />
     </Routes>
