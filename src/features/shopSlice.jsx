@@ -4,10 +4,11 @@ export const shopSlice = createSlice({
   name: "shop",
   initialState: {
     categories: [],
+    products: [],
   },
   reducers: {
-    updateCategories: (state, payload) => {
-      state.categories = payload.categories;
+    updateCategories: (state, action) => {
+      state.categories = action.payload.categories;
     },
   },
 });
