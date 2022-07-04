@@ -1,9 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import HeaderCarousel from "./HeaderCarousel";
 import NavigationLink from "./NavigationLink";
 
 const Navbar = () => {
+  const { categories } = useSelector((state) => state.shop);
   const location = useLocation();
   const currentPath = location.pathname;
   return (
@@ -40,49 +42,17 @@ const Navbar = () => {
               className="navbar-nav w-100 overflow-hidden"
               style={{ height: "410px" }}
             >
-              <div className="nav-item dropdown">
-                <a href="#" className="nav-link" data-toggle="dropdown">
-                  Dresses <i className="fa fa-angle-down float-right mt-1"></i>
-                </a>
-                <div className="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
-                  <a href="" className="dropdown-item">
-                    Men's Dresses
-                  </a>
-                  <a href="" className="dropdown-item">
-                    Women's Dresses
-                  </a>
-                  <a href="" className="dropdown-item">
-                    Baby's Dresses
-                  </a>
-                </div>
-              </div>
-              <a href="" className="nav-item nav-link">
-                Shirts
-              </a>
-              <a href="" className="nav-item nav-link">
-                Jeans
-              </a>
-              <a href="" className="nav-item nav-link">
-                Swimwear
-              </a>
-              <a href="" className="nav-item nav-link">
-                Sleepwear
-              </a>
-              <a href="" className="nav-item nav-link">
-                Sportswear
-              </a>
-              <a href="" className="nav-item nav-link">
-                Jumpsuits
-              </a>
-              <a href="" className="nav-item nav-link">
-                Blazers
-              </a>
-              <a href="" className="nav-item nav-link">
-                Jackets
-              </a>
-              <a href="" className="nav-item nav-link">
-                Shoes
-              </a>
+              {categories.map((category) => {
+                return (
+                  <Link
+                    key={category._id}
+                    to={`/shop/${category.slug}`}
+                    className="nav-item nav-link"
+                  >
+                    {category.name}
+                  </Link>
+                );
+              })}
             </div>
           </nav>
         </div>

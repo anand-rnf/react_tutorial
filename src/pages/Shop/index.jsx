@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import Layout from "../../components/Layout";
 import PageHeader from "../../components/Layout/PageHeader";
 import ColorFilter from "../../components/Shop/ColorFilter";
@@ -6,8 +7,84 @@ import Pagination from "../../components/Shop/Pagination";
 import PriceFilter from "../../components/Shop/PriceFilter";
 import Product from "../../components/Shop/Product";
 import SizeFilter from "../../components/Shop/SizeFilter";
+import { useGetSingleCategoryQuery } from "../../services/shop";
+import ReactPaginate from "react-paginate";
 
 const Shop = () => {
+  const { slug } = useParams();
+  // We start with an empty list of items.
+  const [currentItems, setCurrentItems] = useState(null);
+  const [pageCount, setPageCount] = useState(0);
+  // Here we use item offsets; we could also use page offsets
+  // following the API or data you're working with.
+  const [itemOffset, setItemOffset] = useState(0);
+  const { data, error, isLoading } = useGetSingleCategoryQuery(slug);
+  const itemsPerPage = 3;
+  const products = data ? data?.data?.products : [];
+  console.log(itemOffset);
+  function Items({ currentItems }) {
+    return (
+      <>
+        {currentItems &&
+          currentItems.map((item) => (
+            <div>
+              <h3>Item #{item}</h3>
+            </div>
+          ))}
+      </>
+    );
+  }
+
+  // Invoke when user click to request another page.
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % products.length;
+    setItemOffset(newOffset);
+  };
+
+  const RenderProducts = () => {
+    if (isLoading) {
+      return (
+        <div
+          className="col-md-12"
+          style={{ textAlign: "center", padding: "100px" }}
+        >
+          Loading .....
+        </div>
+      );
+    } else if (error) {
+      return (
+        <div
+          className="col-md-12"
+          style={{ textAlign: "center", padding: "100px" }}
+        >
+          Unable to load data .....
+        </div>
+      );
+    }
+    return (
+      currentItems &&
+      currentItems.map((product) => {
+        return (
+          <Product
+            key={product._id}
+            title={product.title}
+            description={product.description}
+            image={product.image}
+            price={product.price}
+            slug={product.slug}
+          />
+        );
+      })
+    );
+  };
+
+  useEffect(() => {
+    // Fetch items from another resources.
+    const endOffset = itemOffset + itemsPerPage;
+    setCurrentItems(products.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(products.length / itemsPerPage));
+  }, [itemOffset, itemsPerPage, data]);
+
   return (
     <>
       <Layout>
@@ -76,13 +153,31 @@ const Shop = () => {
                     </div>
                   </div>
                 </div>
-                <Product />
-                <Product />
-                <Product />
-                <Product />
-                <Product />
-                <Product />
-                <Pagination />
+                <RenderProducts />
+                <div className="col-12 pb-1">
+                  <nav aria-label="Page navigation">
+                    <ReactPaginate
+                      className="pagination justify-content-center mb-3"
+                      breakLabel="..."
+                      nextLabel=" >"
+                      onPageChange={handlePageClick}
+                      pageRangeDisplayed={5}
+                      pageCount={pageCount}
+                      previousLabel="< "
+                      renderOnZeroPageCount={null}
+                      breakClassName={"page-item"}
+                      breakLinkClassName={"page-link"}
+                      containerClassName={"pagination"}
+                      pageClassName={"page-item"}
+                      pageLinkClassName={"page-link"}
+                      previousClassName={"page-item"}
+                      previousLinkClassName={"page-link"}
+                      nextClassName={"page-item"}
+                      nextLinkClassName={"page-link"}
+                      activeClassName={"active"}
+                    />
+                  </nav>
+                </div>
               </div>
             </div>
           </div>

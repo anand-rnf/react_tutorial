@@ -9,7 +9,12 @@ export const shopApi = createApi({
         url: "categories",
       }),
     }),
+    getSingleCategory: builder.query({
+      query: (slug) => ({
+        url: `categories/${slug}`,
+      }),
+    }),
   }),
 });
 
-export const { useGetAllCategoriesQuery } = shopApi;
+export const { useGetAllCategoriesQuery, useGetSingleCategoryQuery } = shopApi;
