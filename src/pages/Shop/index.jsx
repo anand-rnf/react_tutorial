@@ -21,7 +21,6 @@ const Shop = () => {
   const { data, error, isLoading } = useGetSingleCategoryQuery(slug);
   const itemsPerPage = 3;
   const products = data ? data?.data?.products : [];
-  console.log(itemOffset);
   function Items({ currentItems }) {
     return (
       <>
@@ -77,6 +76,10 @@ const Shop = () => {
       })
     );
   };
+
+  useEffect(() => {
+    setItemOffset(0);
+  }, [slug]);
 
   useEffect(() => {
     // Fetch items from another resources.
