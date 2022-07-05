@@ -21,18 +21,6 @@ const Shop = () => {
   const { data, error, isLoading } = useGetSingleCategoryQuery(slug);
   const itemsPerPage = 3;
   const products = data ? data?.data?.products : [];
-  function Items({ currentItems }) {
-    return (
-      <>
-        {currentItems &&
-          currentItems.map((item) => (
-            <div>
-              <h3>Item #{item}</h3>
-            </div>
-          ))}
-      </>
-    );
-  }
 
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
