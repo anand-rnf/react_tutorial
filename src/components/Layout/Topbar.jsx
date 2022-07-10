@@ -1,6 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Topbar = () => {
+  const [itemsInCart, setItemsInCart] = useState(0);
+
+  const { cart } = useSelector((state) => state.shop);
+
+  useEffect(() => {
+    let total = 0;
+    cart.forEach((item) => {
+      total += item.quantity;
+    });
+    setItemsInCart(total);
+  }, [cart]);
+
   return (
     <div className="container-fluid">
       <div className="row bg-secondary py-2 px-xl-5">
@@ -73,7 +86,7 @@ const Topbar = () => {
           </a>
           <a href="" className="btn border">
             <i className="fas fa-shopping-cart text-primary"></i>
-            <span className="badge">0</span>
+            <span className="badge">{itemsInCart}</span>
           </a>
         </div>
       </div>

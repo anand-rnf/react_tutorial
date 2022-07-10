@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const AddToCart = () => {
+const AddToCart = ({ addToCart }) => {
   const [quantity, setQuantity] = useState(1);
 
   const updateQuantity = (action) => {
@@ -41,7 +41,10 @@ const AddToCart = () => {
           </button>
         </div>
       </div>
-      <button className="btn btn-primary px-3">
+      <button
+        className="btn btn-primary px-3"
+        onClick={() => addToCart(quantity)}
+      >
         <i className="fa fa-shopping-cart mr-1"></i> Add To Cart
       </button>
     </div>

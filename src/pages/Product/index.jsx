@@ -1,7 +1,9 @@
 import React, { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import Layout from "../../components/Layout";
 import PageHeader from "../../components/Layout/PageHeader";
+import { updateCart } from "../../features/shopSlice";
 import { useGetSingleProductQuery } from "../../services/shop";
 import AddToCart from "./AddToCart";
 import ImageCarousal from "./ImageCarousal";
@@ -9,8 +11,11 @@ import Navigation from "./Navigation";
 import SocialShare from "./SocialShare";
 import TabContent from "./TabContent";
 import VariantForm from "./VariantForm";
+import { useAlert } from "react-alert";
 
 function Product() {
+  const alert = useAlert();
+  const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState("description");
   const { slug } = useParams();
   const { data, isLoading, error } = useGetSingleProductQuery(slug);
@@ -19,6 +24,18 @@ function Product() {
   const handleTabClick = useCallback((tab) => {
     setActiveTab(tab);
   }, []);
+
+  const handleAddToCart = useCallback(
+    (quantity) => {
+      const item = {
+        id: product._id,
+        quantity,
+      };
+      dispatch(updateCart(item));
+      alert.show("Item added to the cart successfully.", "success");
+    },
+    [product]
+  );
 
   return (
     <Layout>
@@ -54,7 +71,7 @@ function Product() {
             </h3>
             <p className="mb-4">{product?.description}</p>
             <VariantForm />
-            <AddToCart />
+            <AddToCart addToCart={handleAddToCart} />
             <SocialShare />
           </div>
         </div>
