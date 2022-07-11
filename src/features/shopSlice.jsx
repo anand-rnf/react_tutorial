@@ -21,10 +21,17 @@ export const shopSlice = createSlice({
         cart.push(item);
       }
       state.cart = cart;
+      sessionStorage.setItem("cart", JSON.stringify(state.cart));
+    },
+    restoreCart: (state) => {
+      const cart = sessionStorage.getItem("cart")
+        ? JSON.parse(sessionStorage.getItem("cart"))
+        : [];
+      state.cart = cart;
     },
   },
 });
 
-export const { updateCategories, updateCart } = shopSlice.actions;
+export const { updateCategories, updateCart, restoreCart } = shopSlice.actions;
 
 export default shopSlice.reducer;
