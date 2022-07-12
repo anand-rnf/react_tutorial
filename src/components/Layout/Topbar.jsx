@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Topbar = () => {
   const [itemsInCart, setItemsInCart] = useState(0);
@@ -84,10 +85,10 @@ const Topbar = () => {
             <i className="fas fa-heart text-primary"></i>
             <span className="badge">0</span>
           </a>
-          <a href="" className="btn border">
+          <Link to={"/cart"} className="btn border">
             <i className="fas fa-shopping-cart text-primary"></i>
             <span className="badge">{itemsInCart}</span>
-          </a>
+          </Link>
         </div>
       </div>
     </div>

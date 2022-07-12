@@ -29,6 +29,7 @@ function Product() {
     (quantity) => {
       const item = {
         id: product._id,
+        product,
         quantity,
       };
       dispatch(updateCart(item));
