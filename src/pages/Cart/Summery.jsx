@@ -1,6 +1,6 @@
 import React from "react";
 
-const Summery = ({ cart }) => {
+const Summery = ({ cart, handlePayment }) => {
   const summery = {
     subToatal: 0,
     shipping: 10.0,
@@ -33,7 +33,10 @@ const Summery = ({ cart }) => {
             ${(summery.subToatal + summery.shipping).toFixed(2)}
           </h5>
         </div>
-        <button className="btn btn-block btn-primary my-3 py-3">
+        <button
+          className="btn btn-block btn-primary my-3 py-3"
+          onClick={handlePayment}
+        >
           Proceed To Checkout
         </button>
       </div>
